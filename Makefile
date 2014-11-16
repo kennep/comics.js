@@ -7,8 +7,11 @@ buildserver:
 	cd build && npm install
 	if test ! -f build/npm-shrinkwrap.json; then cd build && npm shrinkwrap; fi
 
-buildclient:
-	echo "Not implemented yet"
-
+buildclient: buildserver
+	if test ! -d build/client; then mkdir build/client; fi
+	cp client/package.json build/client
+	cd build/client && npm install
+	if test ! -f build/client/npm-shrinkwrap.json; then cd build/client && npm shrinkwrap; fi;
+	cp -R client/public build/
 clean:
 	rm -Rf build

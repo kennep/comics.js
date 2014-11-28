@@ -3,10 +3,6 @@ var comics = require('./comics');
 
 var app = express();
 
-app.get('/', function (req, res) {
-	res.send('Hello world!');
-});
-
 var server = app.listen(8080, function() {
 	var host = server.address().address
 	var port = server.address().port
@@ -30,5 +26,8 @@ app.get('/api/comics', function(req, res) {
 		})
 	});
 });
+
+app.use(express.static(__dirname + '/public'));
+
 
 

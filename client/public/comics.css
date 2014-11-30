@@ -1,0 +1,11 @@
+.comic {
+	max-width: 100%;	
+	transition: max-width 0.5s;
+} 
+
+.comic.zoomed {
+	max-width: 200%;
+	transition: max-width 0.5s;
+}
+
+

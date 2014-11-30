@@ -1,0 +1,31 @@
+{
+  "name": "Comics",
+  "version": "1.0.0",
+  "description": "Comics application",
+  "keywords": [
+    "Comics"
+  ],
+  "author": {
+    "name": "Kenneth Pedersen",
+    "email": "kenneth@wangpedersen.com",
+    "url":  "http://www.wangpedersen.com.com/"
+  },
+  "homepage": "http://comics.wangpedersen.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kennep/comics.js"
+  },
+
+  "engines": {
+    "node": ">= 0.10.0",
+    "npm": ">= 1.0.0"
+  },
+
+  "dependencies": {
+  },
+  "devDependencies": {},
+  "bundleDependencies": [],
+
+  "private": true,
+  "main": "build/server.js"
+}

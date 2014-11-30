@@ -34,7 +34,7 @@ function fail(options, comic, error, errorInfo, body) {
 		console.log(body);
 	}
 	comic.error = error;
-	callback(options.comic);
+	options.callback(options.comic);
 }
 
 function notfound(options, comic, body, info) {

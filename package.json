@@ -27,5 +27,8 @@
   "bundleDependencies": [],
 
   "private": true,
-  "main": "build/server.js"
+  "main": "build/server.js",
+  "scripts": {
+    "start": "supervisor build/server.js"
+  }
 }

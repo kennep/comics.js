@@ -1,2 +1,3 @@
 #!/bin/sh
-make
+(cd $OPENSHIFT_REPO_DIR && make)
+

@@ -1,0 +1,40 @@
+#! /bin/sh
+#
+#
+
+# PROVIDE: comics
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf to enable comics:
+#
+#comics_enable="YES"
+
+. /etc/rc.subr
+
+name="comics"
+rcvar="comics_enable"
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+
+load_rc_config $name
+
+: ${comics_user:=www}
+: ${comics_group:=www}
+: ${comics_enable:=NO}
+: ${comics_directory:=/var/www/comics}
+: ${comics_logdir:=/var/www/logs}
+
+comics_start()
+{
+    /usr/sbin/daemon -c -u ${comics_user} -p ${comics_logdir}/comics.pid /usr/local/bin/node ${comics_directory}/server.js 2>&1 >${comics_logdir}/comics.log
+}
+
+comics_stop()
+{
+    if test -f ${comics_logdir}/comics.pid; then kill `cat ${comics_logdir}/comics.pid`; fi
+}
+
+run_rc_command "$1"
+

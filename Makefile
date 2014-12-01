@@ -13,7 +13,8 @@ buildclient: buildserver
 	cd build/client && npm install
 	if test ! -f build/client/npm-shrinkwrap.json; then cd build/client && npm shrinkwrap; fi;
 	cp -R client/public build/
-	#cp -R client/src build/client/
+	if test ! -d build/public/css; then mkdir build/public/css; fi
+	cp build/client/node_modules/bootstrap/dist/css/bootstrap.css build/public/css/bootstrap.css
 	build/client/node_modules/.bin/jsx client/src build/client/src
 	build/client/node_modules/.bin/browserify --debug build/client/src/index.js > build/public/bundle.js
 clean:

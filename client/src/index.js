@@ -21,6 +21,14 @@ var ComicList = React.createClass({
 	},
 	
 	render: function() {
+		if(this.state.comics.length == 0) {
+			var style={'width': '100%'};
+			return <div className="container-fluid"><div className="progress">
+  		  			<div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={style}>
+    					<span class="sr-only">Loading...</span>
+  		  			</div>
+				   </div></div>
+		}
 		return <div className="container-fluid">{this.state.comics.map(function(comic) {
 			return <Comic key={comic.name} comic={comic} />
 		})}</div>
@@ -29,7 +37,7 @@ var ComicList = React.createClass({
 
 var Comic = React.createClass({
 	getInitialState: function() {
-		return {zoomed: false};
+		return {zoomed: false, zoomed2: false};
 	},
 	
 	handleClick: function(event) {
@@ -37,9 +45,24 @@ var Comic = React.createClass({
 		event.preventDefault();
 	},
 	
+
+	handleClick2: function(event) {
+		this.setState({zoomed2: !this.state.zoomed2});
+		event.preventDefault();
+	},
+
 	render: function() {
 		var className="comic";
 		if(this.state.zoomed) className += " zoomed";
+		var img2;
+		if(this.props.comic.url2) {
+			  var className2="comic";
+			  if(this.state.zoomed2) className2 += " zoomed";
+ 		      img2 = <div className="comic-container">
+		        <a href={this.props.comic.originalUrl} onClick={this.handleClick2}><img 
+				className={className2} src={this.props.comic.url2} /></a>
+		      </div>
+		}
 		return <div className="panel panel-default">
 			<div className="panel-heading"><h3 className="panel-title">{this.props.comic.name}</h3></div>
 			<div className="panel-body">
@@ -47,10 +70,11 @@ var Comic = React.createClass({
 		        <a href={this.props.comic.originalUrl} onClick={this.handleClick}><img 
 				className={className} src={this.props.comic.url} /></a>
 		      </div>
+		{img2}
 			  <div dangerouslySetInnerHTML={{__html: this.props.comic.title}} />
 		    </div>
 		</div>
 	}
 });
 
-React.render(<ComicList />, document.body);
+React.render(<ComicList />, document.getElementById('content'));

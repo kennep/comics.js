@@ -81,6 +81,9 @@ function parseComic(options) {
 		if(!comic.url) {
 			return notfound(options, comic, body, "Img expression: " + options.img)
 		}
+		if(options.img2) {
+			comic.url2 = domNodesToText($, options.img2($));
+		}
 		if(options.title) {
 			comic.title = domNodesToText($, options.title($))
 		}

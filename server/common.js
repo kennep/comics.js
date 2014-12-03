@@ -60,6 +60,7 @@ function lv(n, v) {
 }
 
 function domNodesToText($, input) {
+	if(!input) return '';
 	if(input.get) {
 		input = input.get();
 	} 

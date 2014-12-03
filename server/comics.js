@@ -21,6 +21,56 @@ function criticalMiss(callback) {
 						callback: callback});
 }
 
-var comics = [xkcd, criticalMiss];
+function dagbladetComic(comicName, callback) {
+	var identifier = comicName.toLowerCase();
+	return parseComic({name: comicName,
+					   url: 'http://www.dagbladet.no/tegneserie/' + identifier + '/',
+				   	   img: function($) { return $('#' + identifier + '-stripe').attr('src')},
+				   	   callback: callback});
+}
+
+function heltNormaltComic(comicName, callback) {
+	var identifier;
+	if(comicName.name) {
+		identifier = comicName.id
+		comicName = comicName.name
+	} else {
+		identifier = comicName.toLowerCase();
+	}
+	return parseComic({name: comicName,
+					   url: 'http://heltnormalt.no/' + identifier,
+				   	   img: function($) { return $('article.strip img').attr('src')},
+				   	   callback: callback});
+}
+
+function commitStrip(callback) {
+	return parseComic({name: 'CommitStrip',
+					   url: 'http://www.commitstrip.com/en/',
+				  	   img: function($) { return $('div.entry-content img.size-full').attr('src')},
+				  	   title: function($) { return $('div.entry-content p').get(1); },
+				  	   callback: callback});
+}
+
+function smbc(callback) {
+	return parseComic({name: 'SMBC',
+					   url: 'http://www.smbc-comics.com/',
+				  	   img: function($) { return $('div#comicimage img').attr('src')},
+				  	   title: function($) { return $('div#aftercomic img'); },
+				  	   callback: callback});
+}
+
+
+var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Zelda'].map(function(comicName) { 
+	return function(callback) { return dagbladetComic(comicName, callback); }
+});
+
+var heltNormaltComics = ['Dilbert', {name: 'Tommy & Tigern', id: 'tommytigern'}, 
+						 'Kollektivet', 
+					     {name: 'Truth Facts', id: 'truthfacts'}, 
+						 'Hjalmar'].map(function(comicName) { 
+	return function(callback) { return heltNormaltComic(comicName, callback); } 
+});
+
+var comics = [xkcd, criticalMiss, commitStrip, smbc].concat(dagbladetComics).concat(heltNormaltComics);
 
 module.exports = comics;

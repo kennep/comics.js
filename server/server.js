@@ -1,4 +1,4 @@
-var express = require('express')
+var express = require('express');
 var comics = require('./comics');
 
 var app = express();
@@ -8,7 +8,7 @@ var server_ip_address = '0.0.0.0';
 
 var server = app.listen(server_port, server_ip_address, function() {
 	var host = server.address().address
-	var port = server.address().port
+var port = server.address().port
 	
 	console.log('Comics server listening at http://%s:%s', host, port);
 })

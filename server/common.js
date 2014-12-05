@@ -1,16 +1,21 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var util = require('util');
+var url = require('url');
 
 function get(options, bodyfunc) {
 	var comic = newComic(options);
 	request(options.url, function(error, response, body) {
-		if(error) {
-			fail(options, comic, error);
-		} else if(response.statusCode != 200) {
-			fail(options, comic, "HTTP " + response.statusCode);
-		} else {
-			bodyfunc(body, comic);
+		try {
+			if(error) {
+				fail(options, comic, error);
+			} else if(response.statusCode != 200) {
+				fail(options, comic, "HTTP " + response.statusCode);
+			} else {
+				bodyfunc(body, comic);
+			}
+		} catch(err) {
+			fail(options, comic, err);
 		}
 	})
 }
@@ -51,6 +56,7 @@ function regexpComic(options) {
 			comic.url = comicData[1];
 			comic.title = comicData[2];
 			
+			finalizeComic(comic);
 			options.callback(comic);
 	});
 }
@@ -87,8 +93,14 @@ function parseComic(options) {
 		if(options.title) {
 			comic.title = domNodesToText($, options.title($))
 		}
+		finalizeComic(comic);
 		options.callback(comic);
 	});
+}
+
+function finalizeComic(comic) {
+	if(comic.url) comic.url = url.resolve(comic.originalUrl, comic.url);
+	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url);
 }
 
 exports.regexpComic = regexpComic;

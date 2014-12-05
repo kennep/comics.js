@@ -55,6 +55,7 @@ var Comic = React.createClass({
 		var className="comic";
 		if(this.state.zoomed) className += " zoomed";
 		var img2;
+		var error;
 		if(this.props.comic.url2) {
 			  var className2="comic";
 			  if(this.state.zoomed2) className2 += " zoomed";
@@ -63,9 +64,13 @@ var Comic = React.createClass({
 				className={className2} src={this.props.comic.url2} /></a>
 		      </div>
 		}
+		if(this.props.comic.error) {
+			error = <div className="alert alert-danger" role="alert">{this.props.comic.error} {this.props.comic.errorInfo}</div>
+		}
 		return <div className="panel panel-default">
 			<div className="panel-heading"><h3 className="panel-title">{this.props.comic.name}</h3></div>
 			<div className="panel-body">
+		{error}
  		      <div className="comic-container">
 		        <a href={this.props.comic.originalUrl} onClick={this.handleClick}><img 
 				className={className} src={this.props.comic.url} /></a>

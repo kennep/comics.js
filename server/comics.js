@@ -59,6 +59,26 @@ function smbc(callback) {
 				  	   callback: callback});
 }
 
+function ctrlaltdel(callback) {
+	return parseComic({name: 'Ctrl-Alt-Del',
+					   url: 'http://www.cad-comic.com/cad/',
+				   	   img: function($) { return $('#content img').attr('src')},
+				       callback: callback});
+}
+
+function spinnerette(callback) {
+	return parseComic({name: 'Spinnerette',
+					   url: 'http://www.spinnyverse.com',
+				   	   img: function($) { return $('#comicbody img').attr('src')},
+				       callback: callback});
+}
+
+function userfriendly(callback) {
+	return parseComic({name: 'User Friendly',
+                       url: 'http://www.userfriendly.org/static/',
+				       img: function($) { return $("img[alt='Latest Strip']").attr('src')},
+				       callback: callback});
+}
 
 var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Zelda'].map(function(comicName) { 
 	return function(callback) { return dagbladetComic(comicName, callback); }
@@ -71,6 +91,7 @@ var heltNormaltComics = ['Dilbert', {name: 'Tommy & Tigern', id: 'tommytigern'},
 	return function(callback) { return heltNormaltComic(comicName, callback); } 
 });
 
-var comics = [xkcd, criticalMiss, commitStrip, smbc].concat(dagbladetComics).concat(heltNormaltComics);
+var comics = [xkcd, criticalMiss, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly].
+				concat(dagbladetComics).concat(heltNormaltComics);
 
 module.exports = comics;

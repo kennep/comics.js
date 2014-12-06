@@ -23,7 +23,8 @@ function get(options, bodyfunc) {
 function newComic(options) {
 	return {
 		name: options.name,
-		originalUrl: options.url
+		originalUrl: options.url,
+		lastUpdated: options.now
 	}
 }
 

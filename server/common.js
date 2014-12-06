@@ -100,7 +100,7 @@ function parseComic(options) {
 
 function finalizeComic(comic) {
 	if(comic.url) comic.url = url.resolve(comic.originalUrl, comic.url);
-	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url);
+	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url2);
 }
 
 exports.regexpComic = regexpComic;

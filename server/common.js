@@ -15,7 +15,7 @@ function get(options, bodyfunc) {
 				bodyfunc(body, comic);
 			}
 		} catch(err) {
-			fail(options, comic, err);
+			fail(options, comic, err.toString(), err);
 		}
 	})
 }
@@ -95,7 +95,12 @@ function parseComic(options) {
 			comic.title = domNodesToText($, options.title($))
 		}
 		finalizeComic(comic);
-		options.callback(comic);
+		
+		if(options.finalizeCallback) {
+			options.finalizeCallback(comic, options);
+		} else {
+			options.callback(comic);
+		}
 	});
 }
 

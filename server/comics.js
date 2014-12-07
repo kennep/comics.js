@@ -1,3 +1,4 @@
+var request = require('request');
 var common = require('./common');
 
 var xkcd = {
@@ -26,11 +27,34 @@ var criticalMiss = {
 function dagbladetComic(comicName) {
 	var identifier = comicName.toLowerCase(); 
 	
+	function resolveRedirect(url, completedCallback) {
+		var lastLocationHeader;
+		var options = {
+			url: url,
+			followRedirect: function(response) {
+				if(response.headers.location) {
+					lastLocationHeader = response.headers.location;
+				}
+				return true;
+			}
+		}
+		request.head(options, function(error, response, body) {
+			if(!lastLocationHeader) lastLocationHeader = url;
+			completedCallback(lastLocationHeader);
+		});
+	}
+	
 	return {
 		name: comicName,
 		url: 'http://www.dagbladet.no/tegneserie/' + identifier + '/',
 		img: function($) { 
 			return $('#' + identifier + '-stripe').attr('src')
+		},
+		finalizeCallback: function(comic, options) {
+			resolveRedirect(comic.url, function(url) {
+				comic.url = url;
+				options.callback(comic);
+			});
 		}
 	};
 }

@@ -20,6 +20,12 @@ var lastComics = {};
 try {
 	console.log("Loading data from " + comics_json);
 	lastComics = JSON.parse(fs.readFileSync(comics_json));
+	for(comicName in lastComics) {
+		var comic = lastComics[comicName];
+		if(comic.lastUpdated) {
+			comic.lastUpdated = new Date(Date.parse(comic.lastUpdated));
+		}
+	}
 } catch(error) {
 	if(error.code == 'ENOENT') {
 		console.log(comics_json + " does not exist.")
@@ -46,7 +52,7 @@ app.get('/api/comics', function(req, res) {
 					if(a.lastUpdated == b.lastUpdated) {
 						return a.name.localeCompare(b.name);
 					} else {
-						return a.lastUpdated - b.lastUpdated;
+						return b.lastUpdated.getTime() - a.lastUpdated.getTime();
 					}
 				});
 				res.send(response);

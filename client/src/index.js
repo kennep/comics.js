@@ -68,11 +68,12 @@ var Comic = React.createClass({
 			error = <div className="alert alert-danger" role="alert">{this.props.comic.error} {this.props.comic.errorInfo}</div>
 		}
 		return <div className="panel panel-default">
-			<div className="panel-heading"><h3 className="panel-title">{this.props.comic.name}</h3></div>
+			<div className="panel-heading"><h3 className="panel-title"><a 
+				href={this.props.comic.originalUrl}>{this.props.comic.name}</a></h3></div>
 			<div className="panel-body">
 		{error}
  		      <div className="comic-container">
-		        <a href={this.props.comic.originalUrl} onClick={this.handleClick}><img 
+		        <a href="#" onClick={this.handleClick}><img 
 				className={className} src={this.props.comic.url} /></a>
 		      </div>
 		{img2}

@@ -122,6 +122,14 @@ var userfriendly = {
 	}
 };
 
+var dilbertEng = {
+	name: 'Dilbert (English)',
+	url: 'http://dilbert.com/',
+	img: function($) {
+		return $("div.STR_Image img").attr('src')
+	}
+};
+
 var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Zelda'].map(function(comicName) {
 		return dagbladetComic(comicName);
 	}
@@ -141,7 +149,7 @@ var heltNormaltComics = ['Dilbert', {
 	}
 );
 
-var comics = [xkcd, criticalMiss, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly].
+var comics = [xkcd, criticalMiss, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly, dilbertEng].
 concat(dagbladetComics).concat(heltNormaltComics);
 
 module.exports = comics;

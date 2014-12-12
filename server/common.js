@@ -109,5 +109,12 @@ function finalizeComic(comic) {
 	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url2);
 }
 
+function log(text) {
+	args = ["%s: " + text, new Date];
+	for(var i=1; i<arguments.length; ++i) args.push(arguments[i]);
+	console.log.apply(null, args);
+}
+
 exports.regexpComic = regexpComic;
 exports.parseComic = parseComic;
+exports.log = log

@@ -1,24 +1,26 @@
 var fs = require('fs');
 var express = require('express');
+var morgan = require('morgan');
 var comics = require('./comics');
 var common = require('./common');
 
 var app = express();
+app.use(morgan('combined'));
 
 var server_port = 8080;
 var server_ip_address = '0.0.0.0';
 var comics_json = '/tmp/comics.json';
 
 var server = app.listen(server_port, server_ip_address, function() {
-	var host = server.address().address
-var port = server.address().port
+	var host = server.address().address;
+	var port = server.address().port;
 	
-	console.log('Comics server listening at http://%s:%s', host, port);
+	common.log('Comics server listening at http://%s:%s', host, port);
 })
 
 var lastComics = {};
 try {
-	console.log("Loading data from " + comics_json);
+	common.log("Loading data from " + comics_json);
 	lastComics = JSON.parse(fs.readFileSync(comics_json));
 	for(comicName in lastComics) {
 		var comic = lastComics[comicName];
@@ -28,9 +30,9 @@ try {
 	}
 } catch(error) {
 	if(error.code == 'ENOENT') {
-		console.log(comics_json + " does not exist.")
+		common.log(comics_json + " does not exist.")
 	} else {
-		console.log("Error reading from " + comics_json + ": " + error + ", file will be ignored.");
+		common.log("Error reading from " + comics_json + ": " + error + ", file will be ignored.");
 	}
 }
 
@@ -58,7 +60,7 @@ app.get('/api/comics', function(req, res) {
 				res.send(response);
 				fs.writeFile(comics_json, JSON.stringify(lastComics), function(err) {
 					if(err) {
-						console.log("Error writing " + console_json + ": " + err);
+						common.log("Error writing " + console_json + ": " + err);
 					}
 				});
 			}

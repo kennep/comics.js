@@ -16,11 +16,13 @@ var criticalMiss = {
 	name: 'Critical Miss',
 	url: 'http://www.escapistmagazine.com/articles/view/comics/critical-miss.latest',
 	img: function($) {
-		return $('.folder_nav_links ~ img').attr('src')
+		var img = $('#intelliTXT img').get(1);
+		if(img) return $(img).attr('src');
+		return null;
 	},
 	title: function($) {
 		var span = $('#intelliTXT');
-		return span.children().nextAll();
+		return span.children().nextAll().nextAll();
 	}
 };
 

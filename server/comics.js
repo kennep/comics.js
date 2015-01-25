@@ -128,7 +128,7 @@ var dilbertEng = {
 	name: 'Dilbert (English)',
 	url: 'http://dilbert.com/',
 	img: function($) {
-		return $("div.STR_Image img").attr('src')
+		return $("img.img-comic").attr('src')
 	}
 };
 

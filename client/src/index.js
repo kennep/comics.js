@@ -65,7 +65,7 @@ var Comic = React.createClass({
 		      </div>
 		}
 		if(this.props.comic.error) {
-			error = <div className="alert alert-danger" role="alert">{this.props.comic.error} {this.props.comic.errorInfo}</div>
+			error = <div className="alert alert-danger" role="alert"><p>{this.props.comic.error}</p><p>{this.props.comic.errorInfo}</p></div>
 		}
 		return <div className="panel panel-default">
 			<div className="panel-heading"><h3 className="panel-title"><a 

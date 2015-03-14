@@ -93,7 +93,7 @@ var smbc = {
 	name: 'SMBC',
 	url: 'http://www.smbc-comics.com/',
 	img: function($) {
-		return $('div#comicimage img').attr('src')
+		return $('img#comic').attr('src')
 	},
 	img2: function($) {
 		return $('div#aftercomic img').attr('src');

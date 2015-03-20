@@ -1,4 +1,4 @@
-buildall: buildserver buildclient
+buildall: buildserver buildclient dist
 
 buildserver:
 	if test ! -d build; then mkdir build; fi
@@ -17,5 +17,10 @@ buildclient: buildserver
 	cp build/client/node_modules/bootstrap/dist/css/bootstrap.css build/public/css/bootstrap.css
 	build/client/node_modules/.bin/jsx client/src build/client/src
 	build/client/node_modules/.bin/browserify --debug build/client/src/index.js > build/public/bundle.js
+
+dist:
+	if test ! -d dist; then mkdir dist; fi
+	tar -czf dist/comics.tgz build/
+
 clean:
-	rm -Rf build
+	rm -Rf build dist

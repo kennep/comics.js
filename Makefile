@@ -1,4 +1,5 @@
-buildall: buildserver buildclient dist
+builddev: buildserver buildclient_dev
+buildall: buildserver buildclient_prod
 
 buildserver:
 	if test ! -d build; then mkdir build; fi
@@ -7,7 +8,7 @@ buildserver:
 	cd build && npm install
 	if test ! -f build/npm-shrinkwrap.json; then cd build && npm shrinkwrap; fi
 
-buildclient: buildserver
+buildclient_common: buildserver
 	if test ! -d build/client; then mkdir build/client; fi
 	cp client/package.json build/client
 	cd build/client && npm install
@@ -16,9 +17,16 @@ buildclient: buildserver
 	if test ! -d build/public/css; then mkdir build/public/css; fi
 	cp build/client/node_modules/bootstrap/dist/css/bootstrap.css build/public/css/bootstrap.css
 	build/client/node_modules/.bin/jsx client/src build/client/src
-	build/client/node_modules/.bin/browserify --debug build/client/src/index.js > build/public/bundle.js
+	
+buildclient_dev: buildclient_common
+	cd build/client && node_modules/.bin/browserify -d -p [minifyify --map bundle.map.json --output ../public/bundle.map.json] src/index.js > ../public/bundle.js
+	cd build/public && if test ! -e node_modules; then ln -s ../client/node_modules node_modules; fi
+	cd build/public && if test ! -e src; then ln -s ../client/src src; fi
 
-dist:
+buildclient_prod: buildclient_common
+	cd build/client && node_modules/.bin/browserify -p [minifyify --no-map] src/index.js > ../public/bundle.js
+
+dist: buildall
 	if test ! -d dist; then mkdir dist; fi
 	tar -czf dist/comics.tgz build/
 

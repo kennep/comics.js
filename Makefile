@@ -30,5 +30,9 @@ dist: buildall
 	if test ! -d dist; then mkdir dist; fi
 	tar -czf dist/comics.tgz build/
 
+docker: buildall
+	cp Dockerfile build/
+	docker build -t comics-js-app build/
+
 clean:
 	rm -Rf build dist

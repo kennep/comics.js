@@ -4,5 +4,6 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN ["make"]
 WORKDIR build
-CMD ["npm", "start"]
+VOLUME /usr/src/app/data
+ENTRYPOINT ["npm", "start"]
 EXPOSE 8080

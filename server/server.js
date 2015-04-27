@@ -9,7 +9,7 @@ app.use(morgan('combined'));
 
 var server_port = 8080;
 var server_ip_address = '0.0.0.0';
-var comics_json = '/tmp/comics.json';
+var comics_json = '/usr/src/app/data/comics.json';
 
 var server = app.listen(server_port, server_ip_address, function() {
 	var host = server.address().address;

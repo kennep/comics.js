@@ -151,7 +151,7 @@ var heltNormaltComics = ['Dilbert', {
 	}
 );
 
-var comics = [xkcd, criticalMiss, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly, dilbertEng].
+var comics = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly, dilbertEng].
 concat(dagbladetComics).concat(heltNormaltComics);
 
 module.exports = comics;

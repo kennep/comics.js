@@ -60,7 +60,7 @@ app.get('/api/comics', function(req, res) {
 				res.send(response);
 				fs.writeFile(comics_json, JSON.stringify(lastComics), function(err) {
 					if(err) {
-						common.log("Error writing " + console_json + ": " + err);
+						common.log("Error writing " + comics_json + ": " + err);
 					}
 				});
 			}

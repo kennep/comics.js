@@ -112,7 +112,7 @@ var spinnerette = {
 	name: 'Spinnerette',
 	url: 'http://www.spinnyverse.com',
 	img: function($) {
-		return $('#comicbody img').attr('src')
+		return $('img#cc-comic').attr('src')
 	}
 };
 

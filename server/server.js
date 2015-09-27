@@ -36,11 +36,22 @@ try {
 	}
 }
 
+function clone(obj) {
+	var newObj = {}
+	for(var prop in Object.keys(obj)) {
+		if(obj.hasOwnProperty(prop)) {
+			newObj[prop] = obj[prop];
+		}
+	}
+	return newObj;
+}
+
 app.get('/api/comics', function(req, res) {
 	var count = comics.length;
 	var now = new Date();
 	var response = [];
-	comics.forEach(function(comic) {
+	comics.forEach(function(origComic) {
+		var comic = clone(origComic);
 		var comicFactory = comic.Factory;
 		if(!comicFactory) comicFactory = common.parseComic;
 		

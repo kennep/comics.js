@@ -117,4 +117,5 @@ function log(text) {
 
 exports.regexpComic = regexpComic;
 exports.parseComic = parseComic;
+exports.get = get;
 exports.log = log

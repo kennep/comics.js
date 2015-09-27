@@ -1,4 +1,5 @@
 var request = require('request');
+var cheerio = require('cheerio');
 var common = require('./common');
 
 var xkcd = {
@@ -86,6 +87,16 @@ var commitStrip = {
 	},
 	title: function($) {
 		return $('div.entry-content p').get(1);
+	},
+	Factory: function(options) {
+		common.get(options, function(body, comic) {
+			var $ = cheerio.load(body);
+			var entries = $("div.excerpt section a");
+			if(entries.length == 0) throw new Error("No comic entries found");
+			var firstEntry = entries[0];
+			options.url = firstEntry.attr('href');
+			common.parseComic(options);
+		});	
 	}
 };
 

@@ -38,11 +38,11 @@ try {
 
 function clone(obj) {
 	var newObj = {}
-	for(var prop in Object.keys(obj)) {
+	Object.keys(obj).forEach(function(prop) {
 		if(obj.hasOwnProperty(prop)) {
 			newObj[prop] = obj[prop];
 		}
-	}
+	});
 	return newObj;
 }
 

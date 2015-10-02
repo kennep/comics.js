@@ -91,10 +91,7 @@ var commitStrip = {
 	Factory: function(options) {
 		common.get(options, function(body, comic) {
 			var $ = cheerio.load(body);
-			var entries = $("div.excerpt section a");
-			if(entries.length == 0) throw new Error("No comic entries found");
-			var firstEntry = entries[0];
-			options.url = firstEntry.attr('href');
+			options.url = $("div.excerpt section a").attr('href');
 			common.parseComic(options);
 		});	
 	}

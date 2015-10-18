@@ -1,8 +1,8 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-import request = require('request');
-import cheerio = require('cheerio');
-import common = require('./common');
+import * as request from 'request';
+import * as cheerio from 'cheerio';
+import * as common from './common';
 
 var xkcd = {
 	name: 'XKCD',
@@ -29,7 +29,7 @@ var criticalMiss = {
 	}
 };
 
-function dagbladetComic(comicName) {
+function dagbladetComic(comicName : any) : common.Comic {
 	var identifier = comicName.toLowerCase(); 
 	
 	function resolveRedirect(url, completedCallback) {
@@ -64,7 +64,7 @@ function dagbladetComic(comicName) {
 	};
 }
 
-function heltNormaltComic(comicName) {
+function heltNormaltComic(comicName : any) : common.Comic {
 	var identifier;
 	if (comicName.name) {
 		identifier = comicName.id
@@ -161,8 +161,8 @@ var heltNormaltComics = ['Dilbert', {
 	}
 );
 
-var comics = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly, dilbertEng].
+var comics : common.Comic[] = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly, dilbertEng].
 concat(dagbladetComics).concat(heltNormaltComics);
 
-export = comics;
+export default comics;
 

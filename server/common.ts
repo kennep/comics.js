@@ -1,17 +1,21 @@
-import request = require('request');
-import cheerio = require('cheerio');
-import util = require('util');
-import url = require('url');
+import * as request from 'request';
+import * as cheerio from 'cheerio';
+import * as util from 'util';
+import * as url from 'url';
 
 export interface Comic {
 	name: string,
 	url: string,
+	url2?: string,
+	originalUrl?: string,
 	img: ($ : any) => string,
-	title: ($ : any) => string,
+	title?: ($ : any) => string,
 	finalizeCallback? : (comic: Comic, options: any) => void,
 	Factory?: (options: any) => void,
 	now?: Date,
-	callback?: (comicData: any) => void
+	callback?: (comicData: any) => void,
+	errorInfo?: any,
+	error?: any
 }
 
 export function get(options, bodyfunc) {
@@ -73,11 +77,7 @@ export function regexpComic(options) {
 	});
 }
 
-function lv(n, v) {
-	console.log(n + "=", util.inspect(v, {depth: 1, colors:true}));
-}
-
-function domNodesToText($, input) {
+function domNodesToText($ : CheerioStatic, input : any) : string {
 	if(!input) return '';
 	if(input.get) {
 		input = input.get();
@@ -92,7 +92,7 @@ function domNodesToText($, input) {
 	return input;
 }
 
-export function parseComic(options) {
+export function parseComic(options) : void {
 	get(options, function(body, comic) {
 		var $ = cheerio.load(body);
 		comic.url = domNodesToText($, options.img($))
@@ -115,12 +115,12 @@ export function parseComic(options) {
 	});
 }
 
-function finalizeComic(comic) {
+function finalizeComic(comic : Comic) : void {
 	if(comic.url) comic.url = url.resolve(comic.originalUrl, comic.url);
 	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url2);
 }
 
-export function log(text, ...rest) {
+export function log(text: string, ...rest: any[]) {
 	let args = ["%s: " + text, new Date];
 	for(var i=0; i<rest.length; ++i) args.push(rest[i]);
 	console.log.apply(null, args);

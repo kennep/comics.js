@@ -1,5 +1,7 @@
-var React = require('react');
-var jquery = require('jquery');
+/// <reference path="../../typings/tsd.d.ts" />
+
+import * as React from 'react';
+import * as jquery from 'jquery';
 
 var ComicList = React.createClass({
 	getInitialState: function() {
@@ -11,13 +13,15 @@ var ComicList = React.createClass({
 	
 	componentDidMount: function() {
 		var component = this;
-		jquery.ajax("/api/comics")
-			.error(function(jqXHR, textStatus, errorThrown) {
+		jquery.ajax("/api/comics", {
+			error: (jqXHR, textStatus, errorThrown) => {
 				component.setState({error: textStatus + errorThrown});
-			})
-			.success(function(data, textStatus, jqXHR) {
+			},
+			success: (data, textStatus, jqXHR) => {
 				component.setState({error: null, comics: data});
-			});
+			}
+		});
+			
 	},
 	
 	render: function() {
@@ -25,7 +29,7 @@ var ComicList = React.createClass({
 			var style={'width': '100%'};
 			return <div className="container-fluid"><div className="progress">
   		  			<div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={style}>
-    					<span class="sr-only">Loading...</span>
+    					<span className="sr-only">Loading...</span>
   		  			</div>
 				   </div></div>
 		}
@@ -35,7 +39,17 @@ var ComicList = React.createClass({
 	}
 });
 
-var Comic = React.createClass({
+interface ComicProps {
+	key: string;
+	comic: any;
+}
+
+var Comic = React.createClass<ComicProps, any>({
+	propTypes: {
+		key: React.PropTypes.string,
+		comic: React.PropTypes.object
+	},
+	
 	getInitialState: function() {
 		return {zoomed: false, zoomed2: false};
 	},

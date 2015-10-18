@@ -1,10 +1,10 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-import fs = require('fs');
-import express = require('express');
-import morgan = require('morgan');
-import comics = require('./comics');
-import common = require('./common');
+import * as fs from 'fs';
+import * as express from 'express';
+import * as morgan from 'morgan';
+import comics from './comics';
+import * as common from './common';
 
 var app = express();
 app.use(morgan('combined'));

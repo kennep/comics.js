@@ -1,8 +1,10 @@
-var fs = require('fs');
-var express = require('express');
-var morgan = require('morgan');
-var comics = require('./comics');
-var common = require('./common');
+/// <reference path="../typings/tsd.d.ts" />
+
+import fs = require('fs');
+import express = require('express');
+import morgan = require('morgan');
+import comics = require('./comics');
+import common = require('./common');
 
 var app = express();
 app.use(morgan('combined'));
@@ -21,8 +23,8 @@ var server = app.listen(server_port, server_ip_address, function() {
 var lastComics = {};
 try {
 	common.log("Loading data from " + comics_json);
-	lastComics = JSON.parse(fs.readFileSync(comics_json));
-	for(comicName in lastComics) {
+	lastComics = JSON.parse(fs.readFileSync(comics_json).toString());
+	for(let comicName in lastComics) {
 		var comic = lastComics[comicName];
 		if(comic.lastUpdated) {
 			comic.lastUpdated = new Date(Date.parse(comic.lastUpdated));
@@ -36,8 +38,8 @@ try {
 	}
 }
 
-function clone(obj) {
-	var newObj = {}
+function clone<T>(obj : T) : T {
+	var newObj = <T>{}
 	Object.keys(obj).forEach(function(prop) {
 		if(obj.hasOwnProperty(prop)) {
 			newObj[prop] = obj[prop];
@@ -50,7 +52,7 @@ app.get('/api/comics', function(req, res) {
 	var count = comics.length;
 	var now = new Date();
 	var response = [];
-	comics.forEach(function(origComic) {
+	comics.forEach(function(origComic : common.Comic) {
 		var comic = clone(origComic);
 		var comicFactory = comic.Factory;
 		if(!comicFactory) comicFactory = common.parseComic;
@@ -85,7 +87,7 @@ app.use(express.static(__dirname + '/public'));
 function fixLastUpdated(currentComics, lastComics) {
 	var updatedLastComics = {};
 	currentComics.forEach(function(comic) {
-		lastComic = lastComics[comic.name];
+		let lastComic = lastComics[comic.name];
 		if(lastComic && lastComic.url == comic.url) {
 			comic.lastUpdated = lastComic.lastUpdated;
 		}

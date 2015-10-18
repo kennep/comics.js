@@ -1,6 +1,8 @@
-var request = require('request');
-var cheerio = require('cheerio');
-var common = require('./common');
+/// <reference path="../typings/tsd.d.ts" />
+
+import request = require('request');
+import cheerio = require('cheerio');
+import common = require('./common');
 
 var xkcd = {
 	name: 'XKCD',
@@ -34,7 +36,7 @@ function dagbladetComic(comicName) {
 		var lastLocationHeader;
 		var options = {
 			url: url,
-			followRedirect: function(response) {
+			followRedirect: function(response) : boolean {
 				if(response.headers.location) {
 					lastLocationHeader = response.headers.location;
 				}
@@ -162,4 +164,5 @@ var heltNormaltComics = ['Dilbert', {
 var comics = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly, dilbertEng].
 concat(dagbladetComics).concat(heltNormaltComics);
 
-module.exports = comics;
+export = comics;
+

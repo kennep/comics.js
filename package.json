@@ -1,0 +1,29 @@
+{
+  "name": "comics.js",
+  "version": "2.0.0",
+  "description": "Comics Aggregator",
+  "main": "build/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kennep/comics.js.git"
+  },
+  "author": "Kenneth Pedersen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kennep/comics.js/issues"
+  },
+  "homepage": "https://github.com/kennep/comics.js",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.9.2",
+    "merge2": "^0.3.6"
+  },
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "express": "^4.13.3",
+    "morgan": "^1.6.1"
+  }
+}

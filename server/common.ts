@@ -1,9 +1,20 @@
-var request = require('request');
-var cheerio = require('cheerio');
-var util = require('util');
-var url = require('url');
+import request = require('request');
+import cheerio = require('cheerio');
+import util = require('util');
+import url = require('url');
 
-function get(options, bodyfunc) {
+export interface Comic {
+	name: string,
+	url: string,
+	img: ($ : any) => string,
+	title: ($ : any) => string,
+	finalizeCallback? : (comic: Comic, options: any) => void,
+	Factory?: (options: any) => void,
+	now?: Date,
+	callback?: (comicData: any) => void
+}
+
+export function get(options, bodyfunc) {
 	var comic = newComic(options);
 	request(options.url, function(error, response, body) {
 		try {
@@ -28,7 +39,7 @@ function newComic(options) {
 	}
 }
 
-function fail(options, comic, error, errorInfo, body) {
+function fail(options, comic, error, errorInfo = undefined, body = undefined) {
 	console.log("Error: " + error);
 	console.log("URL: " + comic.originalUrl);
 	if(errorInfo) {
@@ -47,7 +58,7 @@ function notfound(options, comic, body, info) {
 	fail(options, comic, "Did not find comic on page", info, body);
 }
 
-function regexpComic(options) {
+export function regexpComic(options) {
 	get(options, function(body, comic) {
 			var comicData = options.regexp.exec(body);
 			
@@ -81,7 +92,7 @@ function domNodesToText($, input) {
 	return input;
 }
 
-function parseComic(options) {
+export function parseComic(options) {
 	get(options, function(body, comic) {
 		var $ = cheerio.load(body);
 		comic.url = domNodesToText($, options.img($))
@@ -109,13 +120,9 @@ function finalizeComic(comic) {
 	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url2);
 }
 
-function log(text) {
-	args = ["%s: " + text, new Date];
-	for(var i=1; i<arguments.length; ++i) args.push(arguments[i]);
+export function log(text, ...rest) {
+	let args = ["%s: " + text, new Date];
+	for(var i=0; i<rest.length; ++i) args.push(rest[i]);
 	console.log.apply(null, args);
 }
 
-exports.regexpComic = regexpComic;
-exports.parseComic = parseComic;
-exports.get = get;
-exports.log = log

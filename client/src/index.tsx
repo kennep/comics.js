@@ -1,6 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from 'react';
+import {render} from 'react-dom';
 import * as jquery from 'jquery';
 
 var ComicList = React.createClass({
@@ -97,4 +98,4 @@ var Comic = React.createClass<ComicProps, any>({
 	}
 });
 
-React.render(<ComicList />, document.getElementById('content'));
+render(<ComicList />, document.getElementById('content'));

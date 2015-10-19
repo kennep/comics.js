@@ -2,7 +2,7 @@
   "name": "comics.js",
   "version": "2.0.0",
   "description": "Comics Aggregator",
-  "main": "build/server.js",
+  "main": "build/dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,14 +22,18 @@
     "gulp-typescript": "^2.9.2",
     "gulp-webpack": "^1.5.0",
     "merge2": "^0.3.6",
+    "rimraf": "^2.4.3",
     "typescript": "^1.6.2",
+    "webpack": "^1.12.2",
     "webpack-typescript": "^0.5.5"
   },
   "dependencies": {
+    "bootstrap": "^3.3.5",
     "cheerio": "^0.19.0",
     "express": "^4.13.3",
     "jquery": "^2.1.4",
     "morgan": "^1.6.1",
-    "react": "^0.14.0"
+    "react": "^0.14.0",
+    "request": "^2.65.0"
   }
 }

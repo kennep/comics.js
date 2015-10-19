@@ -2,8 +2,8 @@ FROM node:0.12.2
 RUN mkdir -p /usr/src/app
 COPY . /usr/src/app
 WORKDIR /usr/src/app
-RUN ["make"]
-WORKDIR build
+RUN ["npm", "install"]
+RUN ["node_modules/.bin/gulp"]
 VOLUME /usr/src/app/data
-ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["node", "build/dist/server.js"]
 EXPOSE 8080

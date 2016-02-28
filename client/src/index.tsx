@@ -37,7 +37,13 @@ var ComicList = React.createClass({
            client_id: '442029269791-mft6hqfi8ofrl246lae5eo7bg6olt9oq.apps.googleusercontent.com' 
         });
         this.auth.currentUser.listen(this.onUserChanged);
-			
+		this.auth.then(() => {
+            if(!this.auth.isSignedIn.get()) {
+                this.setState({'user': null});
+            }
+        }, (error) => {
+            this.setState({'error': error});
+        })	
 	},
     
     onUserChanged: function(currentuser) {
@@ -57,14 +63,19 @@ var ComicList = React.createClass({
             });        
         } else {
             this.setState({'user': null})
-            this.auth.signIn();
         }
     },
 	
+    signIn: function() {
+        this.auth.signIn();
+    },
+    
 	render: function() {
 		if(this.state.comics.length == 0) {
             if(this.state.user == null) {
-               return <div className="container-fluid">Please sign in with your Google ID to use this application</div>           
+               return <div className="container-fluid">Please <a href="#" onClick={this.signIn}>sign in</a> with your Google ID to use this application</div>           
+            } else if(this.state.error) {
+              return <div className="container-fluid">{this.state.error}</div>;  
             } else {
                 var style={'width': '100%'};
                 return <div className="container-fluid"><div className="progress">

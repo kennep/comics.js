@@ -32,6 +32,8 @@ export function verifyUser(authorization) {
         if(token && token['email'] === 'kenneth@wangpedersen.com') {
             return token;   
         } else {
+            console.log("Invalid user: ");
+            console.dir(token);
             return null;
         }
     }  

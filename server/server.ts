@@ -5,6 +5,7 @@ import * as express from 'express';
 import * as morgan from 'morgan';
 import comics from './comics';
 import * as common from './common';
+import * as tokenverify from './tokenverify';
 
 var app = express();
 app.use(morgan('combined'));
@@ -49,6 +50,20 @@ function clone<T>(obj : T) : T {
 }
 
 app.get('/api/comics', function(req, res) {
+    var authorization = req.headers['authorization'];
+    if(authorization) {
+        var userdata = tokenverify.verifyUser(authorization)
+        if(userdata) {
+            console.log("Allowing request from: " + userdata['email']);
+        } else {
+            res.status(403).send("Access denied").end();
+            return;
+        }
+    } else {
+        res.status(401).send("Unauthorized").end();
+        return;
+    }
+    
 	var count = comics.length;
 	var now = new Date();
 	var response = [];

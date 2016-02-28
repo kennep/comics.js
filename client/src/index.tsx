@@ -3,35 +3,75 @@
 import * as React from 'react';
 import * as jquery from 'jquery';
 
+interface GoogleAuth {
+    
+};
+
+interface Auth2 {
+    init(params: any) : GoogleAuth
+}
+
+interface GAPI {
+    auth2 : Auth2
+    load(name : string, callback : any) : void
+};
+
+var gapi : GAPI = (window as any).gapi;
+
 var ComicList = React.createClass({
 	getInitialState: function() {
 		return {
 			comics: [],
-			error: null
+			error: null,
+            user: null
 		};
 	},
 	
 	componentDidMount: function() {
-		var component = this;
-		jquery.ajax("/api/comics", {
-			error: (jqXHR, textStatus, errorThrown) => {
-				component.setState({error: textStatus + errorThrown});
-			},
-			success: (data, textStatus, jqXHR) => {
-				component.setState({error: null, comics: data});
-			}
-		});
+        gapi.load('auth2', this.onAuth2Loaded)
+    },
+    
+    onAuth2Loaded: function() {
+        this.auth = gapi.auth2.init({
+           client_id: '442029269791-mft6hqfi8ofrl246lae5eo7bg6olt9oq.apps.googleusercontent.com' 
+        });
+        this.auth.currentUser.listen(this.onUserChanged);
 			
 	},
+    
+    onUserChanged: function(currentuser) {
+        if(currentuser.isSignedIn()) {
+            this.setState({'user': currentuser});
+            var component = this;
+            jquery.ajax("/api/comics", {
+                headers: {
+                    'Authorization': 'Bearer ' + currentuser.getAuthResponse().id_token
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    component.setState({error: textStatus + errorThrown});
+                },
+                success: (data, textStatus, jqXHR) => {
+                    component.setState({error: null, comics: data});
+                }
+            });        
+        } else {
+            this.setState({'user': null})
+            this.auth.signIn();
+        }
+    },
 	
 	render: function() {
 		if(this.state.comics.length == 0) {
-			var style={'width': '100%'};
-			return <div className="container-fluid"><div className="progress">
-  		  			<div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={style}>
-    					<span className="sr-only">Loading...</span>
-  		  			</div>
-				   </div></div>
+            if(this.state.user == null) {
+               return <div className="container-fluid">Please sign in with your Google ID to use this application</div>           
+            } else {
+                var style={'width': '100%'};
+                return <div className="container-fluid"><div className="progress">
+                        <div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={style}>
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div></div>
+            }
 		}
 		return <div className="container-fluid">{this.state.comics.map(function(comic) {
 			return <Comic key={comic.name} comic={comic} />

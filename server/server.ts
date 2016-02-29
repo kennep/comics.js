@@ -52,18 +52,22 @@ function clone<T>(obj : T) : T {
 app.get('/api/comics', function(req, res) {
     var authorization = req.headers['authorization'];
     if(authorization) {
-        var userdata = tokenverify.verifyUser(authorization)
-        if(userdata) {
-            console.log("Allowing request from: " + userdata['email']);
-        } else {
-            res.status(403).send("Access denied").end();
-            return;
-        }
+        tokenverify.verifyUser(authorization, (userdata) => {
+            if(userdata) {
+                console.log("Allowing request from: " + userdata['email']);
+                performRequest(req, res);
+            } else {
+                res.status(403).send("Access denied").end();
+                return;
+            }
+        });
     } else {
         res.status(401).send("Unauthorized").end();
         return;
     }
-    
+});
+
+function performRequest(req, res) {    
 	var count = comics.length;
 	var now = new Date();
 	var response = [];
@@ -95,7 +99,7 @@ app.get('/api/comics', function(req, res) {
 		};
 		comicFactory(comic);
 	});
-});
+}
 
 app.use(express.static(__dirname + '/public'));
 

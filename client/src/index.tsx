@@ -24,7 +24,8 @@ var ComicList = React.createClass({
 		return {
 			comics: [],
 			error: null,
-            user: null
+            user: null,
+            gapiLoaded: false
 		};
 	},
 	
@@ -41,8 +42,9 @@ var ComicList = React.createClass({
             if(!this.auth.isSignedIn.get()) {
                 this.setState({'user': null});
             }
+            this.setState({'gapiLoaded': true});
         }, (error) => {
-            this.setState({'error': error});
+            this.setState({'error': error, 'gapiLoaded': true});
         })	
 	},
     
@@ -55,7 +57,7 @@ var ComicList = React.createClass({
                     'Authorization': 'Bearer ' + currentuser.getAuthResponse().id_token
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
-                    component.setState({error: textStatus + errorThrown});
+                    component.setState({error: jqXHR.responseText ? jqXHR.responseText : errorThrown});
                 },
                 success: (data, textStatus, jqXHR) => {
                     component.setState({error: null, comics: data});
@@ -72,7 +74,14 @@ var ComicList = React.createClass({
     
 	render: function() {
 		if(this.state.comics.length == 0) {
-            if(this.state.user == null) {
+            if(!this.state.gapiLoaded) {
+                var style={'width': '100%'};
+                return <div className="container-fluid"><div className="progress">
+                        <div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={style}>
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div></div>
+            } else if(this.state.user == null) {
                return <div className="container-fluid">Please <a href="#" onClick={this.signIn}>sign in</a> with your Google ID to use this application</div>           
             } else if(this.state.error) {
               return <div className="container-fluid">{this.state.error}</div>;  

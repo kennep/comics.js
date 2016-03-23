@@ -1,6 +1,6 @@
 #!/bin/sh
 test -n "$OPENSHIFT_REPO_DIR" && cd "$OPENSHIFT_REPO_DIR"
 echo "Build dir: $PWD"
-NODE_ENV=dev npm install || exit 2
+#NODE_ENV=dev npm install || exit 2
 node_modules/.bin/gulp
 

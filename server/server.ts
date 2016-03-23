@@ -9,9 +9,9 @@ import * as common from './common';
 var app = express();
 app.use(morgan('combined'));
 
-var server_port = 8080;
-var server_ip_address = '0.0.0.0';
-var comics_json = '/usr/src/app/data/comics.json';
+var server_port = process.env.NODE_PORT || 8080;
+var server_ip_address = process.env.NODE_IP || '0.0.0.0';
+var comics_json = process.env.OPENSHIFT_DATA_DIR || '/usr/src/app/data/comics.json';
 
 var server = app.listen(server_port, server_ip_address, function() {
 	var host = server.address().address;
@@ -47,6 +47,10 @@ function clone<T>(obj : T) : T {
 	});
 	return newObj;
 }
+
+app.get('/health', function(req, res) {
+    res.send("OK");
+});
 
 app.get('/api/comics', function(req, res) {
 	var count = comics.length;

@@ -3,7 +3,9 @@
   "version": "2.0.0",
   "description": "Comics Aggregator",
   "main": "build/dist/server.js",
+  "private": true,
   "scripts": {
+    "start": "node --use_strict build/dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

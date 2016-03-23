@@ -1,5 +1,5 @@
 #!/bin/sh
-test -z "$OPENSHIFT_REPO_DIR" && cd "$OPENSHIFT_REPO_DIR"
+test -n "$OPENSHIFT_REPO_DIR" && cd "$OPENSHIFT_REPO_DIR"
 echo "Build dir: $PWD"
 node_modules/.bin/gulp
 

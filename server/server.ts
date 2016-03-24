@@ -10,6 +10,17 @@ import * as tokenverify from './tokenverify';
 var app = express();
 app.use(morgan('combined'));
 
+// Redirect to HTTPS if running on openshift
+if (process.env.OPENSHIFT_APP_NAME) {
+    app.use(function (req, res, next) {
+        if (req.headers['x-forwarded-proto'] == 'http') {
+            res.redirect('https://' + req.headers['host'] + req.path);
+        } else {
+            return next();
+        }
+    });
+}
+
 var server_port = process.env.NODE_PORT || 8080;
 var server_ip_address = process.env.NODE_IP || '0.0.0.0';
 var comics_json = process.env.OPENSHIFT_DATA_DIR || '/usr/src/app/data/comics.json';

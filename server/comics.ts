@@ -83,7 +83,7 @@ function heltNormaltComic(comicName : any) : common.Comic {
 
 var commitStrip = {
 	name: 'CommitStrip',
-	url: 'https://www.commitstrip.com/en/',
+	url: 'http://www.commitstrip.com/en/',
 	img: function($) {
 		return $('div.entry-content img.size-full').attr('src')
 	},

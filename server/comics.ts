@@ -6,7 +6,7 @@ import * as common from './common';
 
 var xkcd = {
 	name: 'XKCD',
-	url: 'http://www.xkcd.org/',
+	url: 'https://www.xkcd.org/',
 	img: function($) {
 		return $('#comic img').attr('src')
 	},

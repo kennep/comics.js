@@ -30,8 +30,8 @@ var criticalMiss = {
 };
 
 function dagbladetComic(comicName : any) : common.Comic {
-	var identifier = comicName.toLowerCase(); 
-	
+	var identifier = comicName.toLowerCase();
+
 	function resolveRedirect(url, completedCallback) {
 		var lastLocationHeader;
 		var options = {
@@ -48,7 +48,7 @@ function dagbladetComic(comicName : any) : common.Comic {
 			completedCallback(lastLocationHeader);
 		});
 	}
-	
+
 	return {
 		name: comicName,
 		url: 'http://www.dagbladet.no/tegneserie/' + identifier + '/',
@@ -95,7 +95,7 @@ var commitStrip = {
 			var $ = cheerio.load(body);
 			options.url = $("div.excerpt section a").attr('href');
 			common.parseComic(options);
-		});	
+		});
 	}
 };
 
@@ -103,7 +103,10 @@ var smbc = {
 	name: 'SMBC',
 	url: 'http://www.smbc-comics.com/',
 	img: function($) {
-		return $('img#comic').attr('src')
+		return $('img#cc-comic').attr('src')
+	},
+	title: function($) {
+		return $('img#cc-comic').attr('title')
 	},
 	img2: function($) {
 		return $('div#aftercomic img').attr('src');
@@ -126,6 +129,7 @@ var spinnerette = {
 	}
 };
 
+/* userfriendly comics is disabled - it's just reruns */
 var userfriendly = {
 	name: 'User Friendly',
 	url: 'http://www.userfriendly.org/static/',
@@ -161,8 +165,7 @@ var heltNormaltComics = ['Dilbert', {
 	}
 );
 
-var comics : common.Comic[] = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, userfriendly, dilbertEng].
+var comics : common.Comic[] = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, dilbertEng].
 concat(dagbladetComics).concat(heltNormaltComics);
 
 export default comics;
-

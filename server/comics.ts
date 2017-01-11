@@ -151,6 +151,7 @@ var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Zelda'].map(function(comicNam
 	}
 );
 
+/* heltnormaltcomics are dsiabled, they are down. */
 var heltNormaltComics = ['Dilbert', {
 		name: 'Tommy & Tigern',
 		id: 'tommytigern'
@@ -166,6 +167,6 @@ var heltNormaltComics = ['Dilbert', {
 );
 
 var comics : common.Comic[] = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, dilbertEng].
-concat(dagbladetComics).concat(heltNormaltComics);
+concat(dagbladetComics);
 
 export default comics;

@@ -6,13 +6,15 @@ def registryLogin = 'registry-login'
 node {
   checkout scm
 
-  docker.withRegistry(registry, registryLogin) {
-    stage 'Build'
-    def builtImage = docker.build(image, '--pull .')
+  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+    docker.withRegistry(registry, registryLogin) {
+      stage 'Build'
+      def builtImage = docker.build(image, '--pull .')
 
-    if (env.BRANCH_NAME == 'master') {
-        stage 'Push'
-        builtImage.push()
+      if (env.BRANCH_NAME == 'master') {
+          stage 'Push'
+          builtImage.push()
+      }
     }
   }
 

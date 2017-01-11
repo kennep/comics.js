@@ -6,7 +6,7 @@ def registryLogin = 'registry-login'
 node {
   checkout scm
 
-  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
     docker.withRegistry(registry, registryLogin) {
       stage 'Build'
       def builtImage = docker.build(image, '--pull .')

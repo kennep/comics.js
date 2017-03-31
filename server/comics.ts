@@ -30,7 +30,7 @@ var criticalMiss = {
 };
 
 function dagbladetComic(comicName : any) : common.Comic {
-	var identifier = comicName.toLowerCase();
+	var identifier = comicName.toLowerCase().replace(" ", "-").replace("/", "-");
 
 	function resolveRedirect(url, completedCallback) {
 		var lastLocationHeader;
@@ -53,7 +53,7 @@ function dagbladetComic(comicName : any) : common.Comic {
 		name: comicName,
 		url: 'http://www.dagbladet.no/tegneserie/' + identifier + '/',
 		img: function($) { 
-			return $('#' + identifier + '-stripe').attr('src')
+			return $('article.todays a.strip-container img').attr('src')
 		},
 		finalizeCallback: function(comic, options) {
 			resolveRedirect(comic.url, function(url) {
@@ -146,7 +146,7 @@ var dilbertEng = {
 	}
 };
 
-var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Zelda'].map(function(comicName) {
+var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Zelda/Lille Berlin', 'Rutetid'].map(function(comicName) {
 		return dagbladetComic(comicName);
 	}
 );

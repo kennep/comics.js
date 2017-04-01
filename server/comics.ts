@@ -53,7 +53,7 @@ function dagbladetComic(comicName : any) : common.Comic {
 		name: comicName,
 		url: 'http://www.dagbladet.no/tegneserie/' + identifier + '/',
 		img: function($) { 
-			return $('article.todays a.strip-container img').attr('src')
+			return $('article.callout a.strip-container img').attr('src')
 		},
 		finalizeCallback: function(comic, options) {
 			resolveRedirect(comic.url, function(url) {

@@ -115,9 +115,9 @@ var smbc = {
 
 var ctrlaltdel = {
 	name: 'Ctrl-Alt-Del',
-	url: 'http://www.cad-comic.com/cad/',
+	url: 'https://cad-comic.com/',
 	img: function($) {
-		return $('#content img').attr('src')
+		return $('img.comic-display').attr('src')
 	}
 };
 

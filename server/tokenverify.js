@@ -1,5 +1,5 @@
-import * as jwt from 'jsonwebtoken'
-import * as request from 'request';
+const jwt = require('jsonwebtoken');
+const request = require('request');
 
 var google_certs_url = 'https://www.googleapis.com/oauth2/v1/certs'
 var client_id = '442029269791-mft6hqfi8ofrl246lae5eo7bg6olt9oq.apps.googleusercontent.com'
@@ -12,7 +12,7 @@ function updateGoogleKeys(errorCallback, resultCallback) {
     if(now - last_downloaded > 3600000) {
         console.log("Downloading keys from " + google_certs_url);
         request(google_certs_url, function(error, response, body) {
-            if(error) {                
+            if(error) {
                 errorCallback(error);
             } else {
                 last_downloaded = now;
@@ -25,7 +25,7 @@ function updateGoogleKeys(errorCallback, resultCallback) {
     }
 }
 
-export function verifyToken(token, done) {
+function verifyToken(token, done) {
     updateGoogleKeys((error)=> {
         console.error("Error updating google keys: " + error);
         done(null);
@@ -46,15 +46,16 @@ export function verifyToken(token, done) {
                 }
             }
         }
-        done(null);        
+        done(null);
     });
 }
+exports.verifyToken = verifyToken;
 
-export function verifyUser(authorization, done) {
+function verifyUser(authorization, done) {
     if(authorization && authorization.indexOf('Bearer ')==0) {
         verifyToken(authorization.split(' ', 2)[1], (token) => {
             if(token && token['email'] === 'kenneth@wangpedersen.com') {
-                done(token);  
+                done(token);
             } else {
                 console.log("Invalid user: ");
                 console.dir(token);
@@ -65,3 +66,4 @@ export function verifyUser(authorization, done) {
         done(null);
     }
 }
+exports.verifyUser = verifyUser;

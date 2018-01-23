@@ -144,7 +144,7 @@ var dilbertEng = {
 	}
 };
 
-var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Zelda/Lille Berlin', 'Rutetid'].map(function(comicName) {
+var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Lille Berlin', 'Rutetid'].map(function(comicName) {
 		return dagbladetComic(comicName);
 	}
 );

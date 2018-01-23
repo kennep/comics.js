@@ -28,6 +28,7 @@
     "css-loader": "^0.28.9",
     "shelljs": "^0.8.1",
     "style-loader": "^0.19.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0"
   },
   "dependencies": {
@@ -37,7 +38,6 @@
     "jquery": "^3.3.1",
     "jsonwebtoken": "^8.1.1",
     "morgan": "^1.6.1",
-    "popper": "^1.0.1",
     "popper.js": "^1.12.9",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",

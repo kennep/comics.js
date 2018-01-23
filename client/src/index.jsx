@@ -1,43 +1,33 @@
-/// <reference path="../../typings/tsd.d.ts" />
-
 import * as React from 'react';
 import {render} from 'react-dom';
+import PropTypes from 'prop-types'
 import * as jquery from 'jquery';
 
-interface GoogleAuth {
-    
-};
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-interface Auth2 {
-    init(params: any) : GoogleAuth
-}
+var gapi = window.gapi;
 
-interface GAPI {
-    auth2 : Auth2
-    load(name : string, callback : any) : void
-};
+class ComicList extends React.Component {
 
-var gapi : GAPI = (window as any).gapi;
-
-var ComicList = React.createClass({
-	getInitialState: function() {
-		return {
+constructor(props) {
+	super(props)
+	this.state = {
 			comics: [],
 			error: null,
             user: null,
             gapiLoaded: false
 		};
-	},
-	
-	componentDidMount: function() {
-        gapi.load('auth2', this.onAuth2Loaded)
-    },
-    
-    onAuth2Loaded: function() {
+	}
+
+	componentDidMount() {
+        gapi.load('auth2', this.onAuth2Loaded.bind(this))
+  }
+
+  onAuth2Loaded() {
         this.auth = gapi.auth2.init({
-           client_id: '442029269791-mft6hqfi8ofrl246lae5eo7bg6olt9oq.apps.googleusercontent.com' 
+           client_id: '442029269791-mft6hqfi8ofrl246lae5eo7bg6olt9oq.apps.googleusercontent.com'
         });
-        this.auth.currentUser.listen(this.onUserChanged);
+        this.auth.currentUser.listen(this.onUserChanged.bind(this));
 		this.auth.then(() => {
             if(!this.auth.isSignedIn.get()) {
                 this.setState({'user': null});
@@ -45,10 +35,10 @@ var ComicList = React.createClass({
             this.setState({'gapiLoaded': true});
         }, (error) => {
             this.setState({'error': error, 'gapiLoaded': true});
-        })	
-	},
-    
-    onUserChanged: function(currentuser) {
+        })
+	}
+
+  onUserChanged(currentuser) {
         if(currentuser.isSignedIn()) {
             this.setState({'user': currentuser});
             var component = this;
@@ -62,17 +52,17 @@ var ComicList = React.createClass({
                 success: (data, textStatus, jqXHR) => {
                     component.setState({error: null, comics: data});
                 }
-            });        
+            });
         } else {
             this.setState({'user': null})
         }
-    },
-	
-    signIn: function() {
+  }
+
+  signIn() {
         this.auth.signIn();
-    },
-    
-	render: function() {
+  }
+
+	render() {
 		if(this.state.comics.length == 0) {
             if(!this.state.gapiLoaded) {
                 var style={'width': '100%'};
@@ -82,9 +72,9 @@ var ComicList = React.createClass({
                         </div>
                     </div></div>
             } else if(this.state.user == null) {
-               return <div className="container-fluid">Please <a href="#" onClick={this.signIn}>sign in</a> with your Google ID to use this application</div>           
+               return <div className="container-fluid">Please <a href="#" onClick={this.signIn.bind(this)}>sign in</a> with your Google ID to use this application</div>
             } else if(this.state.error) {
-              return <div className="container-fluid">{this.state.error}</div>;  
+              return <div className="container-fluid">{this.state.error}</div>;
             } else {
                 var style={'width': '100%'};
                 return <div className="container-fluid"><div className="progress">
@@ -98,35 +88,25 @@ var ComicList = React.createClass({
 			return <Comic key={comic.name} comic={comic} />
 		})}</div>
 	}
-});
-
-interface ComicProps {
-	key: string;
-	comic: any;
 }
 
-var Comic = React.createClass<ComicProps, any>({
-	propTypes: {
-		key: React.PropTypes.string,
-		comic: React.PropTypes.object
-	},
-	
-	getInitialState: function() {
-		return {zoomed: false, zoomed2: false};
-	},
-	
-	handleClick: function(event) {
+class Comic extends React.Component {
+	constructor(props) {
+	  super(props)
+		this.state = {zoomed: false, zoomed2: false};
+	}
+
+	handleClick(event) {
 		this.setState({zoomed: !this.state.zoomed});
 		event.preventDefault();
-	},
-	
+	}
 
-	handleClick2: function(event) {
+	handleClick2(event) {
 		this.setState({zoomed2: !this.state.zoomed2});
 		event.preventDefault();
-	},
+	}
 
-	render: function() {
+	render() {
 		var className="comic";
 		if(this.state.zoomed) className += " zoomed";
 		var img2;
@@ -135,27 +115,30 @@ var Comic = React.createClass<ComicProps, any>({
 			  var className2="comic";
 			  if(this.state.zoomed2) className2 += " zoomed";
  		      img2 = <div className="comic-container">
-		        <a href={this.props.comic.originalUrl} onClick={this.handleClick2}><img 
+		        <a href={this.props.comic.originalUrl} onClick={this.handleClick2.bind(this)}><img
 				className={className2} src={this.props.comic.url2} /></a>
 		      </div>
 		}
 		if(this.props.comic.error) {
 			error = <div className="alert alert-danger" role="alert"><p>{this.props.comic.error}</p><p>{this.props.comic.errorInfo}</p></div>
 		}
-		return <div className="panel panel-default">
-			<div className="panel-heading"><h3 className="panel-title"><a 
-				href={this.props.comic.originalUrl}>{this.props.comic.name}</a></h3></div>
-			<div className="panel-body">
+		return <div className="card mb-3">
+			<div className="card-header"><h5><a
+				href={this.props.comic.originalUrl}>{this.props.comic.name}</a></h5></div>
+			<div className="card-body">
 		{error}
  		      <div className="comic-container">
-		        <a href="#" onClick={this.handleClick}><img 
+		        <a href="#" onClick={this.handleClick.bind(this)}><img
 				className={className} src={this.props.comic.url} /></a>
 		      </div>
 		{img2}
-			  <div dangerouslySetInnerHTML={{__html: this.props.comic.title}} />
-		    </div>
+  			  <div dangerouslySetInnerHTML={{__html: this.props.comic.title}} />
+	  	    </div>
 		</div>
 	}
-});
+}
+Comic.propTypes = {
+		comic: PropTypes.object
+}
 
 render(<ComicList />, document.getElementById('content'));

@@ -1,25 +1,12 @@
-/// <reference path="../typings/tsd.d.ts" />
-
-import * as fs from 'fs';
-import * as express from 'express';
-import * as morgan from 'morgan';
-import comics from './comics';
-import * as common from './common';
-import * as tokenverify from './tokenverify';
+const fs = require('fs');
+const express = require('express');
+const morgan = require('morgan');
+const comics = require('./comics');
+const common = require('./common')
+const tokenverify = require('./tokenverify');
 
 var app = express();
 app.use(morgan('combined'));
-
-// Redirect to HTTPS if running on openshift
-if (process.env.OPENSHIFT_APP_NAME) {
-    app.use(function (req, res, next) {
-        if (req.headers['x-forwarded-proto'] == 'http') {
-            res.redirect('https://' + req.headers['host'] + req.path);
-        } else {
-            return next();
-        }
-    });
-}
 
 var server_port = process.env.NODE_PORT || 8080;
 var server_ip_address = process.env.NODE_IP || '0.0.0.0';
@@ -28,7 +15,7 @@ var comics_json = process.env.OPENSHIFT_DATA_DIR || '/usr/src/app/data/comics.j
 var server = app.listen(server_port, server_ip_address, function() {
 	var host = server.address().address;
 	var port = server.address().port;
-	
+
 	common.log('Comics server listening at http://%s:%s', host, port);
 })
 
@@ -50,8 +37,8 @@ try {
 	}
 }
 
-function clone<T>(obj : T) : T {
-	var newObj = <T>{}
+function clone(obj) {
+	var newObj = {}
 	Object.keys(obj).forEach(function(prop) {
 		if(obj.hasOwnProperty(prop)) {
 			newObj[prop] = obj[prop];
@@ -82,15 +69,15 @@ app.get('/api/comics', function(req, res) {
     }
 });
 
-function performRequest(req, res) {    
+function performRequest(req, res) {
 	var count = comics.length;
 	var now = new Date();
 	var response = [];
-	comics.forEach(function(origComic : common.Comic) {
+	comics.forEach(function(origComic) {
 		var comic = clone(origComic);
 		var comicFactory = comic.Factory;
 		if(!comicFactory) comicFactory = common.parseComic;
-		
+
 		comic.now = now;
 		comic.callback = function(comicData) {
 			response.push(comicData);
@@ -129,4 +116,3 @@ function fixLastUpdated(currentComics, lastComics) {
 	});
 	return updatedLastComics;
 }
-

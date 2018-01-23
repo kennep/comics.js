@@ -1,24 +1,9 @@
-import * as request from 'request';
-import * as cheerio from 'cheerio';
-import * as util from 'util';
-import * as url from 'url';
+const request = require('request');
+const cheerio = require('cheerio');
+const util = require('util');
+const url = require('url');
 
-export interface Comic {
-	name: string,
-	url: string,
-	url2?: string,
-	originalUrl?: string,
-	img: ($ : any) => string,
-	title?: ($ : any) => string,
-	finalizeCallback? : (comic: Comic, options: any) => void,
-	Factory?: (options: any) => void,
-	now?: Date,
-	callback?: (comicData: any) => void,
-	errorInfo?: any,
-	error?: any
-}
-
-export function get(options, bodyfunc) {
+function get(options, bodyfunc) {
 	var comic = newComic(options);
 	request(options.url, function(error, response, body) {
 		try {
@@ -34,6 +19,7 @@ export function get(options, bodyfunc) {
 		}
 	})
 }
+exports.get = get;
 
 function newComic(options) {
 	return {
@@ -62,37 +48,38 @@ function notfound(options, comic, body, info) {
 	fail(options, comic, "Did not find comic on page", info, body);
 }
 
-export function regexpComic(options) {
+function regexpComic(options) {
 	get(options, function(body, comic) {
 			var comicData = options.regexp.exec(body);
-			
+
 			if(comicData == null) {
 				return notfound(options, comic, body, "Regexp: " + options.regexp);
 			}
 			comic.url = comicData[1];
 			comic.title = comicData[2];
-			
+
 			finalizeComic(comic);
 			options.callback(comic);
 	});
 }
+exports.regexpComic=regexpComic;
 
-function domNodesToText($ : CheerioStatic, input : any) : string {
+function domNodesToText($, input) {
 	if(!input) return '';
 	if(input.get) {
 		input = input.get();
-	} 
+	}
 	if(!input.get && input.map) {
 		input = input.map(function(input) { return domNodesToText($, input)}).join("");
 	}
 	if(input.name) {
 		input = $.html($(input));
 	}
-	
+
 	return input;
 }
 
-export function parseComic(options) : void {
+function parseComic(options) {
 	get(options, function(body, comic) {
 		var $ = cheerio.load(body);
 		comic.url = domNodesToText($, options.img($))
@@ -106,7 +93,7 @@ export function parseComic(options) : void {
 			comic.title = domNodesToText($, options.title($))
 		}
 		finalizeComic(comic);
-		
+
 		if(options.finalizeCallback) {
 			options.finalizeCallback(comic, options);
 		} else {
@@ -114,15 +101,16 @@ export function parseComic(options) : void {
 		}
 	});
 }
+exports.parseComic = parseComic;
 
-function finalizeComic(comic : Comic) : void {
+function finalizeComic(comic) {
 	if(comic.url) comic.url = url.resolve(comic.originalUrl, comic.url);
 	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url2);
 }
 
-export function log(text: string, ...rest: any[]) {
+function log(text, ...rest) {
 	let args = ["%s: " + text, new Date];
 	for(var i=0; i<rest.length; ++i) args.push(rest[i]);
 	console.log.apply(null, args);
 }
-
+exports.log = log;

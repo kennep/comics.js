@@ -35,7 +35,7 @@
     "bootstrap": "^4.0.0",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.13.3",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "jsonwebtoken": "^8.1.1",
     "morgan": "^1.6.1",
     "popper.js": "^1.12.9",

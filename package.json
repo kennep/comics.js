@@ -41,7 +41,7 @@
     "popper.js": "^1.12.9",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react-dom": "^16.0.1",
     "request": "^2.65.0"
   }
 }

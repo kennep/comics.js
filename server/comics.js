@@ -144,10 +144,12 @@ var dilbertEng = {
 	}
 };
 
+/* Disabled
 var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Lille Berlin', 'Rutetid'].map(function(comicName) {
 		return dagbladetComic(comicName);
 	}
 );
+*/
 
 /* heltnormaltcomics are dsiabled, they are down. */
 var heltNormaltComics = ['Dilbert', {
@@ -164,7 +166,7 @@ var heltNormaltComics = ['Dilbert', {
 	}
 );
 
-var comics = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, dilbertEng].
-concat(dagbladetComics);
+var comics = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, dilbertEng]
+//concat(dagbladetComics);
 
 module.exports = comics;

@@ -20,28 +20,29 @@
   },
   "homepage": "https://github.com/kennep/comics.js",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.9",
-    "shelljs": "^0.8.1",
-    "style-loader": "^0.19.1",
-    "uglifyjs-webpack-plugin": "^1.1.6",
-    "webpack": "^3.10.0"
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.1",
+    "shelljs": "^0.8.3",
+    "style-loader": "^1.0.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "cheerio": "^1.0.0-rc.2",
-    "express": "^4.13.3",
+    "bootstrap": "^4.4.1",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
     "jquery": "^3.4.1",
-    "jsonwebtoken": "^8.1.1",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
-    "popper.js": "^1.12.9",
-    "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.1",
-    "request": "^2.65.0"
+    "popper.js": "^1.16.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "request": "^2.88.0"
   }
 }

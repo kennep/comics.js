@@ -1,13 +1,13 @@
 def image = 'comics'
 def serviceName = image
-def registry = 'https://registry.wangpedersen.com'
-def registryLogin = 'registry-login'
+//def registry = 'https://registry.wangpedersen.com'
+//def registryLogin = 'registry-login'
 
 node {
   checkout scm
 
   wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
-    docker.withRegistry(registry, registryLogin) {
+//    docker.withRegistry(registry, registryLogin) {
       stage 'Build'
       def builtImage = docker.build(image, '--pull .')
 
@@ -15,7 +15,7 @@ node {
           stage 'Push'
           builtImage.push()
       }
-    }
+//    }
   }
 
   //stage 'Deploy'

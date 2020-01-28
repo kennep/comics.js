@@ -1,12 +1,12 @@
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, "client"),
   entry: "./src/index.jsx",
   output: {
-      path: path.resolve(__dirname, 'build/dist/public'),
-      filename: 'bundle.js'
+    path: path.resolve(__dirname, 'build/dist/public'),
+    filename: 'bundle.js'
   },
   module: {
     rules: [
@@ -25,9 +25,10 @@ module.exports = {
     ],
   },
   devtool: 'source-map',
-  plugins: [
-    new UglifyJSPlugin({
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
       sourceMap: true
-    })
-  ]
+    })],
+  },
 };

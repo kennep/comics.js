@@ -115,7 +115,7 @@ class Comic extends React.Component {
 			  var className2="comic";
 			  if(this.state.zoomed2) className2 += " zoomed";
  		      img2 = <div className="comic-container">
-		        <a href={this.props.comic.originalUrl} onClick={this.handleClick2.bind(this)}><img
+		        <a href={this.props.comic.linkUrl} onClick={this.handleClick2.bind(this)}><img
 				className={className2} src={this.props.comic.url2} /></a>
 		      </div>
 		}
@@ -124,7 +124,7 @@ class Comic extends React.Component {
 		}
 		return <div className="card mb-3">
 			<div className="card-header"><h5><a
-				href={this.props.comic.originalUrl}>{this.props.comic.name}</a></h5></div>
+				href={this.props.comic.linkUrl}>{this.props.comic.name}</a></h5></div>
 			<div className="card-body">
 		{error}
  		      <div className="comic-container">

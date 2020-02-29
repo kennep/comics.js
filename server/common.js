@@ -25,6 +25,7 @@ function newComic(options) {
 	return {
 		name: options.name,
 		originalUrl: options.url,
+		linkUrl: options.linkUrl || options.url,
 		lastUpdated: options.now
 	}
 }
@@ -102,6 +103,27 @@ function parseComic(options) {
 	});
 }
 exports.parseComic = parseComic;
+
+function jsonComic(options) {
+	get(options, function(body, comic) {
+		body = JSON.parse(body);
+
+		comic.url = options.img(body);
+		if(!comic.url) {
+			return notfound(options, comic, body, "Image not found");
+		}
+		if(options.img2) comic.url2 = options.img2(body);
+		if(options.title) comic.title = options.title(body);
+		finalizeComic(comic);
+
+		if(options.finalizeCallback) {
+			options.finalizeCallback(comic, options);
+		} else {
+			options.callback(comic);
+		}
+	});
+}
+exports.jsonComic = jsonComic;
 
 function finalizeComic(comic) {
 	if(comic.url) comic.url = url.resolve(comic.originalUrl, comic.url);

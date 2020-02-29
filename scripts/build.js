@@ -1,7 +1,7 @@
 const fs = require('fs');
-const process = require('process');
 const path = require('path');
 const shell = require('shelljs');
+const execa = require('execa')
 
 const projectPath = path.resolve(__dirname, '..');
 const buildPath = path.resolve(projectPath, "build");
@@ -15,7 +15,5 @@ if(!fs.existsSync(distPath)) {
 
 shell.cp("-Ru", path.resolve(clientSrc, "public"), path.resolve(distPath));
 
-var result = shell.exec("babel '" + serverSrc + "' --out-dir '" + distPath + "'")
-
-var result = shell.exec("webpack");
-if(result.code != 0) process.exit(result.code);
+execa.sync('babel', [serverSrc, '--out-dir', distPath], {'stdio': 'inherit'})
+execa.sync('webpack', [], {'stdio': 'inherit'})

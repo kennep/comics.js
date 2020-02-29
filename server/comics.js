@@ -27,8 +27,17 @@ var criticalMiss = {
 	}
 };
 
-function dagbladetComic(comicName) {
-	var identifier = comicName.toLowerCase().replace(" ", "-").replace("/", "-");
+function dagbladetComic(options) {
+	var comicName
+	var identifier;
+	console.log(options)
+	if(options.title) {
+		comicName = options.title
+		identifier = options.id
+	} else {
+		comicName = options
+		identifier = comicName.toLowerCase().replace(" ", "-").replace("/", "-");
+	}
 
 	function resolveRedirect(url, completedCallback) {
 		var lastLocationHeader;
@@ -146,24 +155,18 @@ var dilbertEng = {
 
 var lunch = {
 	name: 'Lunch',
-	url: 'https://e24.no/',
-	img: function($) {
-		// e24 is using a fancy delay-loading trick
-		var frag = '<!--<div class="bunnlinjen-component">                                                                                                                                                                                                  <section id="lunch" class="lunch-container">                                                                                                                                                                                          <div class="lunch-wrapper">                                                                                                                                                                                                               <h2 class="title">Lunch <span class="byline">Av Børge Lund</span></h2>                                                                                                                                                                <div class="comic-strip">                                                                                                                                                                                                                 <img src="https://static.e24.no/images/comics/lunch_20191205.gif" alt="">                                                                                                                                                         </div>                                                                                                                                                                                                                                <div class="lunch-nav">                                                                                                                                                                                                                   <section class="share">                                                                                                                                                                                                                   <ul>                                                                                                                                                                                                                                      <li class="twitter"><i class="fa fa-twitter"></i><span class="desktop-only"> twitter</span></li>                                                                                                                                      <li class="facebook"><i class="fa fa-facebook"></i><span class="desktop-only"> facebook</span></li>                                                                                                                               </ul>                                                                                                                                                                                                                             </section>                                                                                                                                                                                                                            <ul class="controllers">                                                                                                                                                                                                                  <li class="previous active"><i class="fa fa-arrow-circle-left"></i> Forrige</li>                                                                                                                                                      <li class="next">Neste <i class="fa fa-arrow-circle-right"></i></li>                                                                                                                                                              </ul>                                                                                                                                                                                                                             </div>                                                                                                                                                                                                                                <div class="mobile-only lunch-help">Tips: Trykk på bildet for å gjøre det større</div>                                                                                                                                            </div>                                                                                                                                                                                                                            </section>                                                                                                                                                                                                                        </div>                                                                                                                                                                                                                            --><div class="loader"></div>';
-		frag = frag.replace('<!--', '');
-		frag = frag.replace('-->', '');
-
-		var $ = cheerio.load(frag);
-		return $("div.comic-strip img").attr('src')
-	}
+	url: 'https://e24.no/api/comics',
+	linkUrl: 'https://e24.no/',
+	img: function(body) {
+		return 'https://e24.vgc.no/images/comics/lunch_' + body[0]['id'] + '.gif'
+	},
+	Factory: common.jsonComic
 };
 
-/* Disabled
-var dagbladetComics = ['Pondus', 'Lunch', 'Nemi', 'Lille Berlin', 'Rutetid'].map(function(comicName) {
+var dagbladetComics = ['Dunce', 'Nemi'].map(function(comicName) {
 		return dagbladetComic(comicName);
 	}
 );
-*/
 
 /* heltnormaltcomics are dsiabled, they are down. */
 var heltNormaltComics = ['Dilbert', {
@@ -180,7 +183,6 @@ var heltNormaltComics = ['Dilbert', {
 	}
 );
 
-var comics = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, dilbertEng, lunch]
-//concat(dagbladetComics);
+var comics = [xkcd, commitStrip, smbc, ctrlaltdel, spinnerette, dilbertEng, lunch].concat(dagbladetComics);
 
 module.exports = comics;

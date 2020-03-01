@@ -163,7 +163,7 @@ var lunch = {
 	Factory: common.jsonComic
 };
 
-var dagbladetComics = ['Dunce', 'Nemi'].map(function(comicName) {
+var dagbladetComics = ['Dunce', 'Nemi', {'title': 'Intet nytt fra hjemmefronten', 'id': 'intetnyttfrahjemmefronten'}].map(function(comicName) {
 		return dagbladetComic(comicName);
 	}
 );

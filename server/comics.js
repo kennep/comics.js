@@ -155,12 +155,15 @@ var dilbertEng = {
 
 var lunch = {
 	name: 'Lunch',
-	url: 'https://e24.no/api/comics',
 	linkUrl: 'https://e24.no/',
-	img: function(body) {
-		return 'https://e24.vgc.no/images/comics/lunch_' + body[0]['id'] + '.gif'
+	img: function() {
+		var now = new Date();
+		return ('https://api.e24.no/content/v1/comics/' + 
+			common.numToStr(now.getFullYear(), 4) + "-" +
+			common.numToStr(now.getMonth(), 2) + "-" + 
+			common.numToStr(now.getDate()))
 	},
-	Factory: common.jsonComic
+	Factory: common.directUrlComic
 };
 
 var dagbladetComics = ['Dunce', 'Nemi', {'title': 'Intet nytt fra hjemmefronten', 'id': 'intetnyttfrahjemmefronten'}].map(function(comicName) {

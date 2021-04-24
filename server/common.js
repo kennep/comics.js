@@ -125,7 +125,26 @@ function jsonComic(options) {
 }
 exports.jsonComic = jsonComic;
 
+function directUrlComic(options)
+{
+	var comic = newComic(options)
+	comic.url = options.img()
+	console.log(comic)
+	if(options.img2) comic.url2 = options.img2()
+	if(options.title) comic.title = options.title()
+	finalizeComic(comic)
+
+	if(options.finalizeCallback) {
+		options.finalizeCallback(comic, options);
+	} else {
+		options.callback(comic);
+	}
+}
+exports.directUrlComic = directUrlComic
+
 function finalizeComic(comic) {
+	if(!comic.originalUrl) return;
+	
 	if(comic.url) comic.url = url.resolve(comic.originalUrl, comic.url);
 	if(comic.url2) comic.url2 = url.resolve(comic.originalUrl, comic.url2);
 }
@@ -136,3 +155,14 @@ function log(text, ...rest) {
 	console.log.apply(null, args);
 }
 exports.log = log;
+
+function numToStr(num, places)
+{
+	let output = num.toString();
+	while(output.length < places)
+	{
+		output = "0" + output;
+	}
+	return output;
+}
+exports.numToStr = numToStr

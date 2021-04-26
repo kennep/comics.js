@@ -6,6 +6,14 @@ const common = require('./common')
 const tokenverify = require('./tokenverify');
 
 var app = express();
+
+// set up rate limiter: maximum of five requests per minute
+const RateLimit = require('express-rate-limit');
+const limiter = new RateLimit({
+  windowMs: 1*60*1000, // 1 minute
+  max: 30
+});
+
 app.use(morgan('combined'));
 
 var server_port = process.env.NODE_PORT || 8080;

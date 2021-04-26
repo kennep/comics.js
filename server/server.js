@@ -15,6 +15,7 @@ const limiter = new RateLimit({
 });
 
 app.use(morgan('combined'));
+app.use(limiter);
 
 var server_port = process.env.NODE_PORT || 8080;
 var server_ip_address = process.env.NODE_IP || '0.0.0.0';

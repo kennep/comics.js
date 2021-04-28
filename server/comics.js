@@ -160,7 +160,7 @@ var lunch = {
 		var now = new Date();
 		return ('https://api.e24.no/content/v1/comics/' + 
 			common.numToStr(now.getFullYear(), 4) + "-" +
-			common.numToStr(now.getMonth(), 2) + "-" + 
+			common.numToStr(now.getMonth() + 1, 2) + "-" +
 			common.numToStr(now.getDate()))
 	},
 	Factory: common.directUrlComic
